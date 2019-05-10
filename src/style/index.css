@@ -1,0 +1,36 @@
+body {
+  background-color: #fff6f1;
+}
+
+th, td {
+  padding-left: 10px;
+}
+
+.patient input {
+  width: auto;
+}
+
+.patient input.number {
+  width: 50px;
+}
+
+.react-datepicker__input-container input {
+  width: 140px;
+}
+
+.edit-info {
+  margin-left: 4px;
+  margin-right: 4px;
+  font-size: x-small;
+  color: blue;
+  cursor: grab;
+}
+
+.section-title {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.header-name {
+  font-size: 40px;
+}
