@@ -17,11 +17,21 @@ export function mkStrings(ar: t.TypeOf<primitives.R4.StringType>[] | undefined, 
     return mkString(res);
 }
 
-export function readString(id: string): t.TypeOf<primitives.R4.StringType> {
-    // @ts-ignore
-    return $("#" + id).val().toString().trim();
+function toR4String(text: string | number | string[] | undefined): t.TypeOf<primitives.R4.StringType> | undefined {
+    return text !== undefined ? text.toString().trim() : undefined;
 }
 
-export function readArrayString(id: string): t.TypeOf<primitives.R4.StringType>[] {
-    return readString(id).split("\\s+");
+export function readSpan(id: string): t.TypeOf<primitives.R4.StringType> | undefined {
+    const span: JQuery<HTMLSpanElement> = $("#" + id);
+    return toR4String(span.text());
+}
+
+export function readInput(id: string): t.TypeOf<primitives.R4.StringType> | undefined {
+    const input: JQuery<HTMLInputElement> = $("#" + id);
+    return toR4String(input.val());
+}
+
+export function readSelect(id: string): t.TypeOf<primitives.R4.StringType> | undefined {
+    const select: JQuery<HTMLSelectElement> = $("#" + id);
+    return toR4String($(select[0].selectedOptions[0]).val());
 }

@@ -18,17 +18,14 @@ class EditSectionView extends React.Component<EditProps, EditState> {
         }
     }
 
-    onClick() {
+    onClick(): void {
         if (this.state.editMode) {
             this.props.onSaveClick();
+            this.setState({editMode: false});
         } else {
             this.props.onEditClick();
+            this.setState({editMode: true});
         }
-        this.setState((prevState: EditState) => {
-            return {
-                editMode: !prevState.editMode
-            }
-        });
     }
 
     render(): ReactFragment {

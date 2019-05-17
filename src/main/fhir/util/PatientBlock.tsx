@@ -26,18 +26,13 @@ class PatientBlockView<Props extends PatientBlockProps, State extends PatientBlo
     }
 
     onEditClick(): void {
-        this.setState(prevState => ({
-            ...prevState, // TODO
-            edit: true
-        }));
+        this.setState({edit: true});
     }
 
     onSaveClick(): void {
         this.props.save().then((p: R4.Patient) => {
-            this.setState(prevState => ({
-                ...prevState, // TODO
-                edit: false
-            }));
+            console.log("Success save");
+            this.setState({edit: false});
         }, function (err) {
             console.error(err);
         });

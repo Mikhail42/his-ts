@@ -1,9 +1,9 @@
 import React, {ReactFragment} from 'react';
 
 import {R4} from "@tangdrew/fhir-types";
-import Text from "./../primitive/Text";
-import Select from "../primitive/Select";
-import Number from "../primitive/Int";
+import TextField from "../primitive/TextField";
+import SelectField from "../primitive/SelectField";
+import IntField from "../primitive/IntField";
 import Period from "./Period";
 
 const telecomSystem: { [id: string]: string } = {
@@ -28,32 +28,39 @@ export interface TelecomProps {
     telecom: R4.ContactPoint;
     edit: boolean;
     i: number | undefined;
+    remove: () => void;
 }
 
 class TelecomView extends React.Component<TelecomProps, {}> {
     render(): ReactFragment {
         const t = this.props.telecom;
-        const i = this.props.i || "";
+        const i = this.props.i;
         const defSystemKey = t.system || "other";
         const edit = this.props.edit;
         const defUseKey = t.use || "mobile";
         return <tr>
-            <td><Select id={"telecomSystem" + i} edit={edit} selectMap={telecomSystem} defKey={defSystemKey}/></td>
-            <td><Text edit={edit} value={t.value || ""} id={"telecomValue" + i}/></td>
-            <td><Number edit={edit} value={t.rank} id={"telecomRank" + i}/></td>
-            <td><Select id={"telecomUse" + i} edit={edit} selectMap={telecomUse} defKey={defUseKey}/></td>
+            <td><SelectField id={"telecomSystem" + i} edit={edit} selectMap={telecomSystem} defKey={defSystemKey}/></td>
+            <td><TextField edit={edit} value={t.value || ""} id={"telecomValue" + i}/></td>
+            <td><IntField edit={edit} value={t.rank} id={"telecomRank" + i}/></td>
+            <td><SelectField id={"telecomUse" + i} edit={edit} selectMap={telecomUse} defKey={defUseKey}/></td>
             <td><Period period={t.period || {}} edit={edit} idSuffix={"Telecom" + i}/></td>
+            {edit && <td><button onClick={this.props.remove}>Удалить</button></td>}
         </tr>;
     }
 
-    static read(i: number, old?: R4.ContactPoint): R4.ContactPoint {
+    static isEmpty(t: R4.ContactPoint | undefined): boolean {
+        return !(t && (t.use || t.rank || t.system || t.value || t.id || (t.period && (t.period.start || t.period.end))));
+    }
+
+    static read(i: number, old?: R4.ContactPoint): R4.ContactPoint | undefined {
         const newTelecom: R4.ContactPoint = {
-            system: Select.readSelectedKey("telecomSystem" + i, telecomSystem),
-            value: Text.read("telecomValue" + i),
-            rank: Number.readInt("telecomRank" + i),
-            use: Select.readSelectedKey("telecomUse" + i, telecomUse),
+            system: SelectField.readSelectedKey("telecomSystem" + i, telecomSystem),
+            value: TextField.read("telecomValue" + i),
+            rank: IntField.readInt("telecomRank" + i),
+            use: SelectField.readSelectedKey("telecomUse" + i, telecomUse),
             period: Period.read("Telecom" + i)
         };
+        if (TelecomView.isEmpty(newTelecom)) return undefined;
         return Object.assign(old || {}, newTelecom);
     }
 }

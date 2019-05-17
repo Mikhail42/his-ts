@@ -1,8 +1,8 @@
 import React, {ReactFragment} from 'react';
 
 import {R4} from "@tangdrew/fhir-types";
-import PatientBlock, {PatientBlockProps, PatientBlockState} from "./util/PatientBlock";
-import Address from "./general/Address";
+import PatientBlock, {PatientBlockProps, PatientBlockState} from "../util/PatientBlock";
+import Address from "../general/Address";
 
 export interface PatientAddressProps extends PatientBlockProps {
     address: R4.Address[]
@@ -28,6 +28,7 @@ class PatientAddressView extends PatientBlock<PatientAddressProps, PatientAddres
     }
 
     static read(old?: R4.Address[]): R4.Address[] {
+        console.log("start read patient's address");
         const a = (old && old.length) ? old[0] : undefined;
         return [Address.read(a)];
     }

@@ -2,7 +2,7 @@ import React, {ReactFragment} from 'react';
 
 import * as primitives from "@tangdrew/primitives";
 import * as t from "io-ts";
-import Select from "./primitive/Select";
+import SelectField from "./primitive/SelectField";
 
 export interface GenderViewProps {
     sex: t.TypeOf<primitives.R4.CodeType> | undefined;
@@ -22,13 +22,13 @@ class GenderView extends React.Component<GenderViewProps, {}> {
         return <tr>
             <td>Пол</td>
             <td>
-                <Select id="gender" edit={this.props.edit} selectMap={genderMap} defKey={defKey}/>
+                <SelectField id="gender" edit={this.props.edit} selectMap={genderMap} defKey={defKey}/>
             </td>
         </tr>;
     }
 
     static read(): t.TypeOf<primitives.R4.CodeType> | undefined {
-        return Select.readSelectedKey("gender", genderMap);
+        return SelectField.readSelectedKey("gender", genderMap);
     }
 }
 

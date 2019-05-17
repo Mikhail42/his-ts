@@ -1,24 +1,22 @@
 import React, {ReactFragment} from 'react';
 
 import {R4} from "@tangdrew/fhir-types";
-import PatientBlock, {PatientBlockProps, PatientBlockState} from "./util/PatientBlock";
-import ContactPointList from "./general/ContactPointList";
+import PatientBlock, {PatientBlockProps, PatientBlockState} from "../util/PatientBlock";
+import ContactPointList from "../general/ContactPointList";
 
 export interface TelecomProps extends PatientBlockProps {
     telecoms: R4.ContactPoint[];
 }
 
 export interface TelecomState extends PatientBlockState {
-    telecoms: R4.ContactPoint[];
 }
 
 class TelecomListView extends PatientBlock<TelecomProps, TelecomState> {
     constructor(props: TelecomProps) {
         super(props);
         this.state = {
-            telecoms: this.props.telecoms,
             edit: this.props.edit
-        }
+        };
     }
 
     render(): ReactFragment {
@@ -29,6 +27,7 @@ class TelecomListView extends PatientBlock<TelecomProps, TelecomState> {
     }
 
     static read(): R4.ContactPoint[] {
+        console.log("start read patient's telecoms");
         return ContactPointList.read();
     }
 }

@@ -2,8 +2,8 @@ import React, {ReactFragment} from 'react';
 
 import {R4} from "@tangdrew/fhir-types";
 import {mkString, asString} from "../primitive/string";
-import Text from "../primitive/Text";
-import Select from "../primitive/Select";
+import TextField from "../primitive/TextField";
+import SelectField from "../primitive/SelectField";
 import Period from "./Period";
 
 export interface AddressProps {
@@ -21,7 +21,7 @@ const addressUse: { [id: string]: string } = {
 
 class AddressView extends React.Component<AddressProps, {}> {
     textTr(id: string, text: string, value: string): ReactFragment {
-        return Text.textTr(id, text, value, this.props.edit);
+        return TextField.textTr(id, text, value, this.props.edit);
     }
 
     render(): ReactFragment {
@@ -33,10 +33,10 @@ class AddressView extends React.Component<AddressProps, {}> {
                 <tbody className="block-table-body">
                     <tr>
                         <td>Тип</td>
-                        <td><Select id="addressUse" edit={edit} selectMap={addressUse} defKey={defUseKey}/></td>
+                        <td><SelectField id="addressUse" edit={edit} selectMap={addressUse} defKey={defUseKey}/></td>
                     </tr>
                     {this.textTr("addressLine", "Улица, дом", mkString(a.line))}
-                    {this.textTr("addressCity", "Город, село", asString(a.city))}
+                    {this.textTr("addressCity", "Город/село", asString(a.city))}
                     {(a.district || edit) && this.textTr("addressDistrict", "Район", asString(a.district))}
                     {this.textTr("addressState", "Регион", asString(a.state))}
                     {(a.country || edit) && this.textTr("addressCountry", "Страна", asString(a.country))}
@@ -50,12 +50,14 @@ class AddressView extends React.Component<AddressProps, {}> {
     }
 
     static read(old?: R4.Address): R4.Address {
+        console.log("start read address");
         const newAddress: R4.Address = {
-            use: Select.readSelectedKey("addressUse", addressUse),
-            line: Text.readArray("addressLine"),
-            city: Text.read("addressCity"),
-            district: Text.read("addressDistrict"),
-            country: Text.read("addressCountry"),
+            use: SelectField.readSelectedKey("addressUse", addressUse),
+            line: TextField.readArray("addressLine"),
+            city: TextField.read("addressCity"),
+            district: TextField.read("addressDistrict"),
+            state: TextField.read("addressState"),
+            country: TextField.read("addressCountry"),
             period: Period.read("address")
         };
         return Object.assign(old || {}, newAddress);

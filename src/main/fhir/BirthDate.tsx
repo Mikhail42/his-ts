@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import * as primitives from "@tangdrew/primitives";
 import * as t from "io-ts";
-import DateView from "./primitive/Date";
+import DateField from "./primitive/DateField";
 import {ageText, isValid} from "./primitive/date";
 
 export interface BirthDateProps {
@@ -20,17 +20,17 @@ class BirthDateView extends React.Component<BirthDateProps, {}> {
         return <tr>
             <td>Дата рождения</td>
             <td>
-                <DateView id="birthDate" edit={this.props.edit} date={birthDateStr} afterDate={birthDate ? " (" + age + ")" : ""}/>
+                <DateField id="birthDate" edit={this.props.edit} date={birthDateStr} afterDate={birthDate ? " (" + age + ")" : ""}/>
             </td>
         </tr>;
     }
 
     static read(format?: string): Date | undefined {
-       return DateView.read("birthDate", format);
+       return DateField.read("birthDate", format);
     }
 
     static readAsIso8601(format?: string): t.TypeOf<primitives.R4.DateType> | undefined {
-        return DateView.readAsIso8601("birthDate", format);
+        return DateField.readAsIso8601("birthDate", format);
     }
 }
 

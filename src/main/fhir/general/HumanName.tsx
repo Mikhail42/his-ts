@@ -2,7 +2,7 @@ import React, {ReactFragment} from 'react';
 
 import {R4} from "@tangdrew/fhir-types";
 import {mkString, asString} from "../primitive/string";
-import Text from "../primitive/Text";
+import TextField from "../primitive/TextField";
 
 export interface HumanNameViewProps {
     humanName: R4.HumanName;
@@ -16,19 +16,20 @@ class HumanNameView extends React.Component<HumanNameViewProps, {}> {
         return <>
             <tr>
                 <td>Фамилия</td>
-                <td><Text id="family" value={defFamily} edit={this.props.edit}/></td>
+                <td><TextField id="family" value={defFamily} edit={this.props.edit}/></td>
             </tr>
             <tr>
                 <td>Имя, отчество</td>
-                <td><Text id="given" value={defGiven} edit={this.props.edit}/></td>
+                <td><TextField id="given" value={defGiven} edit={this.props.edit}/></td>
             </tr>
         </>;
     }
 
     static read(old: R4.HumanName | undefined): R4.HumanName {
+        console.log("start read human name");
         const newName: R4.HumanName = {
-            given: Text.readArray("given"),
-            family: Text.read("family")
+            given: TextField.readArray("given"),
+            family: TextField.read("family")
         };
         return Object.assign(old || {}, newName);
     }

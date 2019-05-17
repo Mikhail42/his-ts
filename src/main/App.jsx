@@ -1,6 +1,6 @@
 import React from "react";
 import { R4 } from "@tangdrew/fhir-types/dist/index";
-import Patient from "./fhir/Patient";
+import Patient from "./fhir/patient/Patient";
 import {humanName} from "./fhir/general/name";
 import {mkString, asString} from "./fhir/primitive/string";
 
